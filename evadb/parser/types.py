@@ -82,3 +82,5 @@ class ObjectType(EvaDBEnum):
     FUNCTION  # noqa: F821
     INDEX  # noqa: F821
     DATABASE  # noqa: F821
+    JOB  # noqa: F821
+

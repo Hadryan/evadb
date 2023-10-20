@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import contextlib
+import datetime
 import json
 from dataclasses import dataclass, field
 from typing import List, Tuple
@@ -256,4 +257,36 @@ class DatabaseCatalogEntry:
             "name": self.name,
             "engine": self.engine,
             "params": self.params,
+        }
+
+@dataclass(unsafe_hash=True)
+class JobCatalogEntry:
+    """Dataclass representing an entry in the `JobCatalog`.
+    This is done to ensure we don't expose the sqlalchemy dependencies beyond catalog service. Further, sqlalchemy does not allow sharing of objects across threads.
+    """
+
+    name: str
+    queries: list
+    start_time: datetime
+    end_time: datetime
+    repeat_interval: int
+    repeat_period: str
+    active: bool
+    next_scheduled_run: datetime
+    created_at: datetime
+    updated_at: datetime
+    row_id: int = None
+
+    def display_format(self):
+        return {
+            "name": self.name,
+            "queries": self.queries,
+            "start_time": self.start_time,
+            "end_time": self.end_time,
+            "repeat_interval": self.repeat_interval,
+            "repeat_period": self.repeat_period,
+            "active": self.active,
+            "next_schedule_run": self.next_scheduled_run,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
         }
